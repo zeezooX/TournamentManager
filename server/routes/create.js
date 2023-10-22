@@ -3,7 +3,7 @@ const tournament = require("../modules/tournament");
 const matchmake = require("../modules/matchmake");
 const router = express.Router();
 
-router.post("/", (req, res) => {
+router.post("/", (req, res, next) => {
   try {
     if (req.body.teams === undefined) {
       res.status(400).send({

@@ -2,7 +2,7 @@ const express = require("express");
 const tournament = require("../modules/tournament");
 const router = express.Router();
 
-router.post("/", (req, res) => {
+router.post("/", (req, res, next) => {
   try {
     if(req.query.matchID === undefined) {
       res.status(400).send({
