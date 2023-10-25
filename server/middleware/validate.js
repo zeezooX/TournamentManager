@@ -12,12 +12,21 @@ const validate = function (req, res, next) {
         return;
       }
 
-      tournament.teams = JSON.parse(data).teams;
-      tournament.groups = JSON.parse(data).groups;
-      tournament.leaderboard = JSON.parse(data).leaderboard;
-      tournament.currentMatch = JSON.parse(data).currentMatch;
-      tournament.matches = JSON.parse(data).matches;
-      console.log("Backup file loaded.");
+      try {
+        tournament.teams = JSON.parse(data).teams;
+        tournament.groups = JSON.parse(data).groups;
+        tournament.leaderboard = JSON.parse(data).leaderboard;
+        tournament.currentMatch = JSON.parse(data).currentMatch;
+        tournament.matches = JSON.parse(data).matches;
+        console.log("Backup file loaded.");
+      } catch (err) {
+        console.log(err);
+        res.status(400).send({
+          message: "Tournament not yet created.",
+        });
+        return;
+      }
+      
       next();
     });
   } else {
