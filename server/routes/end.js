@@ -107,12 +107,19 @@ router.post("/", (req, res, next) => {
           : semifinals[1].teams[1]
       );
 
+      const third = {
+        teams: standings[0],
+        score: [0, 0],
+        done: false,
+        bestOf: 5,
+      };
       const final = {
         teams: standings[1],
         score: [0, 0],
         done: false,
         bestOf: 7,
       };
+      tournament.matches.push(third);
       tournament.matches.push(final);
     }
 

@@ -65,6 +65,8 @@ const Main = () => {
           return "Group Stage";
         } else if (index < noOfMatches + 2) {
           return "Semi-Final";
+        } else if(index < noOfMatches + 3) {
+          return "Third Place";
         } else {
           return "Grand Final";
         }

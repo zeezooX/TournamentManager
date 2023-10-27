@@ -41,7 +41,7 @@ const theme = createTheme({
 });
 
 const App = () => {
-  axios.defaults.baseURL = "http://localhost:8080/api/";
+  axios.defaults.baseURL = "api/";
 
   const router = createBrowserRouter([
     {
