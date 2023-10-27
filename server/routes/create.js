@@ -45,6 +45,7 @@ router.post("/", (req, res, next) => {
       }
     }
 
+    tournament.currentMatch = 0;
     res.status(200).send(tournament);
     next();
   } catch (err) {

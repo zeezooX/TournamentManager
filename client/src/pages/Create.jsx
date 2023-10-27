@@ -64,7 +64,7 @@ const Create = () => {
         <Stack spacing={2} direction="row" justifyContent="space-between">
           <Button
             variant="contained"
-            color="magenta"
+            color="orange"
             onClick={() => {
               if (teams.length < 4) {
                 setError(true);
@@ -73,7 +73,7 @@ const Create = () => {
                   .post(`/create`, { teams: teams })
                   .then((res) => {
                     console.log("RESPONSE RECEIVED: ", res);
-                    navigate("/main");
+                    navigate("/draw");
                   })
                   .catch((err) => {
                     console.log("AXIOS ERROR: ", err);
@@ -86,7 +86,7 @@ const Create = () => {
           {isOngoing && (
             <Button
               variant="outlined"
-              color="magenta"
+              color="orange"
               onClick={() => {
                 navigate("/main");
               }}

@@ -40,7 +40,7 @@ router.post("/", (req, res, next) => {
 
     tournament.matches[tournament.currentMatch].score = score;
 
-    res.status(200).send(tournament.matches[tournament.currentMatch]);
+    res.status(200).send(tournament);
     next();
   } catch (err) {
     res.status(500).send({

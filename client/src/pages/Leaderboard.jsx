@@ -9,8 +9,12 @@ import {
   Avatar,
   Stack,
   Divider,
+  Fab,
+  Tooltip,
 } from "@mui/material";
 import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined";
+import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 const Leaderboard = () => {
   const navigate = useNavigate();
@@ -32,7 +36,6 @@ const Leaderboard = () => {
         }
         standings.sort((a, b) => b.score - a.score);
         setStandings(standings);
-        console.log(standings);
       })
       .catch((err) => {
         console.log("AXIOS ERROR: ", err);
@@ -53,7 +56,7 @@ const Leaderboard = () => {
       <Stack spacing={2} alignItems="center">
         <img
           src={"/assets/logo.png"}
-          style={{ width: "560px", cursor:'pointer'}}
+          style={{ width: "560px", cursor: "pointer" }}
           alt=""
           onClick={() => {
             navigate("/create");
@@ -63,17 +66,21 @@ const Leaderboard = () => {
           sx={{
             width: "100%",
             maxWidth: 360,
+            bgcolor: "background.paper",
             border: "1px solid #bdbdbd",
             borderRadius: 3,
-            padding: 1.5,
+            py: 1.5,
           }}
           subheader={
             <ListSubheader style={{ fontSize: "32px" }}>
+              <FormatListNumberedIcon sx={{ width: 36, height: 36, mb: -1 }} />{" "}
               Leaderboard
             </ListSubheader>
           }
         >
           <Divider />
+          <List sx={{overflow: "auto",
+            maxHeight: "65vh",}}>
           {standings.map((x, i) => {
             let avatarColor = null;
             if (i === 0) {
@@ -84,7 +91,7 @@ const Leaderboard = () => {
               avatarColor = "#a77044";
             }
             return (
-              <ListItem disablePadding>
+              <ListItem disablePadding key={`standing-${i}`}>
                 <Avatar
                   sx={{ width: 48, height: 48, bgcolor: avatarColor, mx: 2 }}
                 >
@@ -105,8 +112,18 @@ const Leaderboard = () => {
               </ListItem>
             );
           })}
+          </List>
         </List>
       </Stack>
+      <Tooltip title="Return to Main Page">
+        <Fab
+          color="cyan"
+          sx={{ position: "absolute", bottom: 16, right: 16 }}
+          onClick={() => navigate("/main")}
+        >
+          <ExitToAppIcon />
+        </Fab>
+      </Tooltip>
     </div>
   );
 };

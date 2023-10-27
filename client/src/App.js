@@ -1,6 +1,8 @@
 import Create from "./pages/Create";
 import Leaderboard from "./pages/Leaderboard";
+import Standings from "./pages/Standings";
 import Main from "./pages/Main";
+import Draw from "./pages/Draw";
 import axios from "axios";
 import {
   createBrowserRouter,
@@ -55,8 +57,16 @@ const App = () => {
       element: <Leaderboard />,
     },
     {
+      path: "/standings",
+      element: <Standings />,
+    },
+    {
       path: "/main",
       element: <Main />,
+    },
+    {
+      path: "/draw",
+      element: <Draw />,
     },
     {
       path: "*",

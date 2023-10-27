@@ -1,13 +1,13 @@
 function matchmake(teams, level) {
   if (level == teams.length) return [];
-  matches = [[], []];
+  const matches = [[], []];
   for (let i = 0; i < teams.length; i += level) {
     for (let j = i; j + level < teams.length && j - i < level; j++) {
-      match = {
+      const match = {
         teams: [teams[j], teams[j + level]],
         score: [0, 0],
         done: false,
-        bestOf: 3,
+        bestOf: 5,
       };
       matches[i % 2].push(match);
     }

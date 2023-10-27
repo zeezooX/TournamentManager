@@ -3,7 +3,7 @@ const tournament = {
   groups: [[], []],
   leaderboard: {},
   matches: [],
-  currentMatch: -1,
+  currentMatch: 0,
 };
 
 module.exports = tournament;
