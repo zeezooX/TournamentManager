@@ -19,7 +19,17 @@ const Standings = () => {
           navigate("/main");
         }
         setTeams(res.data.teams);
-        const teams = res.data.matches.slice(-1)[0].teams;
+        const teams = [];
+        if (
+          res.data.matches.slice(-1)[0].score[0] >
+          res.data.matches.slice(-1)[0].score[1]
+        ) {
+          teams.push(res.data.matches.slice(-1)[0].teams[0]);
+          teams.push(res.data.matches.slice(-1)[0].teams[1]);
+        } else {
+          teams.push(res.data.matches.slice(-1)[0].teams[1]);
+          teams.push(res.data.matches.slice(-1)[0].teams[0]);
+        }
         if (
           res.data.matches.slice(-2)[0].score[0] >
           res.data.matches.slice(-2)[0].score[1]
