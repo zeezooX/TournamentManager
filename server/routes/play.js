@@ -20,7 +20,7 @@ router.post("/", (req, res, next) => {
 
     tournament.currentMatch = req.query.matchID;
     
-    res.status(200).send(tournament.matches[tournament.currentMatch]);
+    res.status(200).send(tournament);
     next();
   } catch (err) {
     res.status(500).send({

@@ -19,7 +19,16 @@ const Standings = () => {
           navigate("/main");
         }
         setTeams(res.data.teams);
-        setPlaces(res.data.matches.slice(-1)[0].teams);
+        const teams = res.data.matches.slice(-1)[0].teams;
+        if (
+          res.data.matches.slice(-2)[0].score[0] >
+          res.data.matches.slice(-2)[0].score[1]
+        ) {
+          teams.push(res.data.matches.slice(-2)[0].teams[0]);
+        } else {
+          teams.push(res.data.matches.slice(-2)[0].teams[1]);
+        }
+        setPlaces(teams);
       })
       .catch((err) => {
         console.log("AXIOS ERROR: ", err);
@@ -47,22 +56,35 @@ const Standings = () => {
           }}
         />
         <Stack direction="row" spacing={2}>
-          {["1st Place", "2nd Place"].map((x, i) => (
-            <Paper variant="elevation" elevation={6} sx={{ padding: 2 }} key={`place-${i}`}>
+          {[
+            ["1st Place", "#fdbd10", "#fff"],
+            ["2nd Place", "#d0d0d0", "#000"],
+            ["3rd Place", "#a77044", "#fff"],
+          ].map((x, i) => (
+            <Paper
+              variant="elevation"
+              elevation={6}
+              sx={{ padding: 2 }}
+              key={`place-${i}`}
+            >
               <Chip
                 label={
                   <Typography variant="h2" textAlign="center">
                     <WorkspacePremiumOutlinedIcon
                       sx={{ width: 48, height: 48 }}
                     />{" "}
-                    {x}{" "}
+                    {x[0]}{" "}
                     <WorkspacePremiumOutlinedIcon
                       sx={{ width: 48, height: 48 }}
                     />
                   </Typography>
                 }
-                color="orange"
-                sx={{ fontSize: "24px", py: 5 }}
+                sx={{
+                  fontSize: "24px",
+                  py: 5,
+                  bgcolor: x[1],
+                  color: x[2],
+                }}
               />
               <Typography variant="h3" textAlign="center" sx={{ mt: 2 }}>
                 {teams[places[i]]}
