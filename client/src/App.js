@@ -41,7 +41,7 @@ const theme = createTheme({
 });
 
 const App = () => {
-  axios.defaults.baseURL = "api/";
+  axios.defaults.baseURL = "https://tournament-manager-backend.vercel.app/api/";
 
   const router = createBrowserRouter([
     {
