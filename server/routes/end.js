@@ -33,6 +33,7 @@ router.post("/", (req, res, next) => {
     }
 
     tournament.matches[tournament.currentMatch].done = true;
+    tournament.matches[tournament.currentMatch].isRunning = false;
     let multiplier = 1;
 
     const n = tournament.groups[0].length;
@@ -68,20 +69,31 @@ router.post("/", (req, res, next) => {
         return tournament.leaderboard[b] - tournament.leaderboard[a];
       });
 
-      const first = {
-        teams: [standings[0][1], standings[1][0]],
-        score: [0, 0],
-        done: false,
-        bestOf: 5,
-      };
-      const second = {
-        teams: [standings[0][0], standings[1][1]],
-        score: [0, 0],
-        done: false,
-        bestOf: 5,
-      };
-      tournament.matches.push(first);
-      tournament.matches.push(second);
+      if (standings[1].length) {
+        const first = {
+          teams: [standings[0][1], standings[1][0]],
+          score: [0, 0],
+          done: false,
+          bestOf: 5,
+        };
+        const second = {
+          teams: [standings[0][0], standings[1][1]],
+          score: [0, 0],
+          done: false,
+          bestOf: 5,
+        };
+        tournament.matches.push(first);
+        tournament.matches.push(second);
+      } else {
+        const final = {
+          teams: [standings[0][0], standings[0][1]],
+          score: [0, 0],
+          done: false,
+          remainingTime: 600,
+          isRunning: false,
+        };
+        tournament.matches.push(final);
+      }
     } else if (numOfDone === noOfMatches + 2) {
       const semifinals = tournament.matches.slice(-2);
       const standings = [[], []];

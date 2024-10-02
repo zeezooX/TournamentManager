@@ -26,12 +26,7 @@ router.post("/", (req, res, next) => {
     }
 
     const score = [parseInt(req.query.score0), parseInt(req.query.score1)];
-    if (
-      Math.min(score[0], score[1]) < 0 ||
-      Math.max(score[0], score[1]) >
-        tournament.matches[tournament.currentMatch].bestOf / 2 + 1 ||
-      score[0] + score[1] > tournament.matches[tournament.currentMatch].bestOf
-    ) {
+    if (Math.min(score[0], score[1]) < 0) {
       res.status(400).send({
         message: "Score is out of range.",
       });
@@ -39,6 +34,14 @@ router.post("/", (req, res, next) => {
     }
 
     tournament.matches[tournament.currentMatch].score = score;
+
+    if (
+      req.query.isRunning &&
+      tournament.matches[tournament.currentMatch].isRunning != null
+    ) {
+      tournament.matches[tournament.currentMatch].isRunning =
+        req.query.isRunning === "true";
+    }
 
     res.status(200).send(tournament);
     next();
