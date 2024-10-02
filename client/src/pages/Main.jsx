@@ -65,7 +65,7 @@ const Main = () => {
           return "Group Stage";
         } else if (index < noOfMatches + 2) {
           return "Semi-Final";
-        } else if(index < noOfMatches + 3) {
+        } else if (index < noOfMatches + 3) {
           return "Third Place";
         } else {
           return "Grand Final";
@@ -78,6 +78,8 @@ const Main = () => {
         score: match.score,
         done: match.done,
         bestOf: match.bestOf,
+        remainingTime: match.remainingTime,
+        isRunning: match.isRunning,
       };
     });
     setUpcomingMatches(matches.filter((match) => !match.done));
@@ -97,6 +99,19 @@ const Main = () => {
       });
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (ongoingMatch.isRunning && ongoingMatch.remainingTime > 0) {
+        setOngoingMatch({
+          ...ongoingMatch,
+          remainingTime: ongoingMatch.remainingTime - 1,
+        });
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [ongoingMatch]);
+
   const handleMatchClick = (e, match) => {
     e.preventDefault();
     setOngoingMatch(match);
@@ -115,13 +130,14 @@ const Main = () => {
       });
   };
 
-  const handleMatchUpdate = (e, score) => {
+  const handleMatchUpdate = (e, score, isRunning = ongoingMatch.isRunning) => {
     e.preventDefault();
     axios
       .post(`/update`, null, {
         params: {
           score0: score[0],
           score1: score[1],
+          isRunning: isRunning,
         },
       })
       .then((res) => {
@@ -195,11 +211,31 @@ const Main = () => {
           <Paper variant="elevation" elevation={6} sx={{ padding: 2 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <div align="center">
+                <div
+                  align="center"
+                  onClick={(e) => {
+                    handleMatchUpdate(
+                      e,
+                      ongoingMatch.score,
+                      !ongoingMatch.isRunning
+                    );
+                  }}
+                >
                   <Chip
-                    label={ongoingMatch.type}
-                    color="orange"
-                    sx={{ fontSize: "24px", padding: 1 }}
+                    label={`
+                    ${
+                      Math.floor(ongoingMatch.remainingTime / 60) < 10
+                        ? "0" + Math.floor(ongoingMatch.remainingTime / 60)
+                        : Math.floor(ongoingMatch.remainingTime / 60)
+                    }
+                     : 
+                    ${
+                      ongoingMatch.remainingTime % 60 < 10
+                        ? "0" + (ongoingMatch.remainingTime % 60)
+                        : ongoingMatch.remainingTime % 60
+                    }`}
+                    color={ongoingMatch.isRunning ? "cyan" : "orange"}
+                    sx={{ fontSize: "56px", padding: 4 }}
                   />
                 </div>
               </Grid>
@@ -232,15 +268,6 @@ const Main = () => {
                 <Typography variant="h1" align="center">
                   {ongoingMatch.score[1]}
                 </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <div align="center">
-                  <Chip
-                    label={`best of ${ongoingMatch.bestOf}`}
-                    color="orange"
-                    sx={{ fontSize: "24px", padding: 1 }}
-                  />
-                </div>
               </Grid>
             </Grid>
           </Paper>
@@ -366,53 +393,51 @@ const Main = () => {
           divider={<Divider orientation="horizontal" flexItem />}
           spacing={2}
         >
-          {["A", "B"].map((x, i) => (
-            <Paper key={`paper-${i}`} variant="outlined">
-              <List
-                sx={{
-                  width: "100%",
-                  bgcolor: "background.paper",
-                  position: "relative",
-                  overflow: "auto",
-                  height: "45vh",
-                  maxHeight: "45vh",
-                  "& ul": { padding: 0 },
-                }}
-                subheader={
-                  <ListSubheader style={{ fontSize: "32px" }}>
-                    <FeaturedPlayListOutlinedIcon
-                      sx={{ width: 36, height: 36, mb: -1 }}
-                    />{" "}
-                    Group {x}
-                    <Divider />
-                  </ListSubheader>
-                }
-              >
-                {groups[i].map((y, j) => {
-                  return (
-                    <ListItem key={`item-${j}`} disablePadding>
-                      <Avatar
-                        sx={{
-                          width: 48,
-                          height: 48,
-                          bgcolor: j < 2 ? "cyan.main" : null,
-                          mx: 2,
-                        }}
-                      >
-                        {j + 1}
-                      </Avatar>
-                      <ListItemText
-                        primaryTypographyProps={{ fontSize: "20px" }}
-                        secondaryTypographyProps={{ fontSize: "18px" }}
-                        primary={y.name}
-                        secondary={"Score: " + y.score.toFixed(1)}
-                      />
-                    </ListItem>
-                  );
-                })}
-              </List>
-            </Paper>
-          ))}
+          <Paper key={`paper-${0}`} variant="outlined">
+            <List
+              sx={{
+                width: "100%",
+                bgcolor: "background.paper",
+                position: "relative",
+                overflow: "auto",
+                // height: "45vh",
+                // maxHeight: "45vh",
+                "& ul": { padding: 0 },
+              }}
+              subheader={
+                <ListSubheader style={{ fontSize: "32px" }}>
+                  <FeaturedPlayListOutlinedIcon
+                    sx={{ width: 36, height: 36, mb: -1 }}
+                  />{" "}
+                  Standings
+                  <Divider />
+                </ListSubheader>
+              }
+            >
+              {groups[0].map((y, j) => {
+                return (
+                  <ListItem key={`item-${j}`} disablePadding>
+                    <Avatar
+                      sx={{
+                        width: 48,
+                        height: 48,
+                        bgcolor: j < 2 ? "cyan.main" : null,
+                        mx: 2,
+                      }}
+                    >
+                      {j + 1}
+                    </Avatar>
+                    <ListItemText
+                      primaryTypographyProps={{ fontSize: "20px" }}
+                      secondaryTypographyProps={{ fontSize: "18px" }}
+                      primary={y.name}
+                      secondary={"Score: " + y.score.toFixed(1)}
+                    />
+                  </ListItem>
+                );
+              })}
+            </List>
+          </Paper>
         </Stack>
       </Grid>
     </Grid>

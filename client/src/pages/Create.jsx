@@ -70,10 +70,10 @@ const Create = () => {
                 setError(true);
               } else {
                 axios
-                  .post(`/create`, { teams: teams })
+                  .post(`/createsingle`, { teams: teams })
                   .then((res) => {
                     console.log("RESPONSE RECEIVED: ", res);
-                    navigate("/draw");
+                    navigate("/main");
                   })
                   .catch((err) => {
                     console.log("AXIOS ERROR: ", err);
