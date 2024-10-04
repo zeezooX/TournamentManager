@@ -34,27 +34,31 @@ router.post("/", (req, res, next) => {
 
     tournament.matches[tournament.currentMatch].done = true;
     tournament.matches[tournament.currentMatch].isRunning = false;
-    let multiplier = 1;
 
-    const n = tournament.groups[0].length;
-    const m = tournament.groups[1].length;
+    tournament.leaderboard[match.teams[0]] += match.score[0];
+    tournament.leaderboard[match.teams[1]] += match.score[1];
 
-    if (
-      tournament.currentMatch < noOfMatches &&
-      n < m &&
-      tournament.groups[0].includes(match.teams[0])
-    ) {
-      multiplier = (m - 1) / (n - 1);
-    }
+    // let multiplier = 1;
 
-    if (match.score[0] > match.score[1]) {
-      tournament.leaderboard[match.teams[0]] += multiplier * 3;
-    } else if (match.score[0] < match.score[1]) {
-      tournament.leaderboard[match.teams[1]] += multiplier * 3;
-    } else {
-      tournament.leaderboard[match.teams[0]] += multiplier;
-      tournament.leaderboard[match.teams[1]] += multiplier;
-    }
+    // const n = tournament.groups[0].length;
+    // const m = tournament.groups[1].length;
+
+    // if (
+    //   tournament.currentMatch < noOfMatches &&
+    //   n < m &&
+    //   tournament.groups[0].includes(match.teams[0])
+    // ) {
+    //   multiplier = (m - 1) / (n - 1);
+    // }
+
+    // if (match.score[0] > match.score[1]) {
+    //   tournament.leaderboard[match.teams[0]] += multiplier * 3;
+    // } else if (match.score[0] < match.score[1]) {
+    //   tournament.leaderboard[match.teams[1]] += multiplier * 3;
+    // } else {
+    //   tournament.leaderboard[match.teams[0]] += multiplier;
+    //   tournament.leaderboard[match.teams[1]] += multiplier;
+    // }
 
     const numOfDone = tournament.matches.reduce((x, i) => {
       return x + (i.done === true ? 1 : 0);

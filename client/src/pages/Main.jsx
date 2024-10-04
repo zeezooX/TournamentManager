@@ -18,6 +18,8 @@ import {
   Chip,
   Fab,
   Collapse,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import SportsKabaddiIcon from "@mui/icons-material/SportsKabaddi";
 import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined";
@@ -268,6 +270,23 @@ const Main = () => {
                 <Typography variant="h1" align="center">
                   {ongoingMatch.score[1]}
                 </Typography>
+              </Grid>
+              <Grid item xs={5}>
+                <div align="center">
+                  <FormControlLabel
+                    control={<Checkbox color="orange" />}
+                    label="Line Followed"
+                  />
+                </div>
+              </Grid>
+              <Grid item xs={2}></Grid>
+              <Grid item xs={5}>
+                <div align="center">
+                  <FormControlLabel
+                    control={<Checkbox color="orange" />}
+                    label="Line Followed"
+                  />
+                </div>
               </Grid>
             </Grid>
           </Paper>

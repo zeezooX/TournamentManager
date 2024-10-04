@@ -19,25 +19,26 @@ const Standings = () => {
           navigate("/main");
         }
         setTeams(res.data.teams);
-        const teams = [];
-        if (
-          res.data.matches.slice(-1)[0].score[0] >
-          res.data.matches.slice(-1)[0].score[1]
-        ) {
-          teams.push(res.data.matches.slice(-1)[0].teams[0]);
-          teams.push(res.data.matches.slice(-1)[0].teams[1]);
-        } else {
-          teams.push(res.data.matches.slice(-1)[0].teams[1]);
-          teams.push(res.data.matches.slice(-1)[0].teams[0]);
-        }
-        if (
-          res.data.matches.slice(-2)[0].score[0] >
-          res.data.matches.slice(-2)[0].score[1]
-        ) {
-          teams.push(res.data.matches.slice(-2)[0].teams[0]);
-        } else {
-          teams.push(res.data.matches.slice(-2)[0].teams[1]);
-        }
+        const teams = res.data.leaderboard.map((x, i) => [x, i]);
+        teams.sort((a, b) => b[0] - a[0]);
+        // if (
+        //   res.data.matches.slice(-1)[0].score[0] >
+        //   res.data.matches.slice(-1)[0].score[1]
+        // ) {
+        //   teams.push(res.data.matches.slice(-1)[0].teams[0]);
+        //   teams.push(res.data.matches.slice(-1)[0].teams[1]);
+        // } else {
+        //   teams.push(res.data.matches.slice(-1)[0].teams[1]);
+        //   teams.push(res.data.matches.slice(-1)[0].teams[0]);
+        // }
+        // if (
+        //   res.data.matches.slice(-2)[0].score[0] >
+        //   res.data.matches.slice(-2)[0].score[1]
+        // ) {
+        //   teams.push(res.data.matches.slice(-2)[0].teams[0]);
+        // } else {
+        //   teams.push(res.data.matches.slice(-2)[0].teams[1]);
+        // }
         setPlaces(teams);
       })
       .catch((err) => {
@@ -65,42 +66,71 @@ const Standings = () => {
             navigate("/create");
           }}
         />
-        <Stack direction="row" spacing={2}>
-          {[
-            ["1st Place", "#fdbd10", "#fff"],
-            ["2nd Place", "#d0d0d0", "#000"],
-            ["3rd Place", "#a77044", "#fff"],
-          ].map((x, i) => (
-            <Paper
-              variant="elevation"
-              elevation={6}
-              sx={{ padding: 2 }}
-              key={`place-${i}`}
-            >
-              <Chip
-                label={
-                  <Typography variant="h2" textAlign="center">
-                    <WorkspacePremiumOutlinedIcon
-                      sx={{ width: 48, height: 48 }}
-                    />{" "}
-                    {x[0]}{" "}
-                    <WorkspacePremiumOutlinedIcon
-                      sx={{ width: 48, height: 48 }}
-                    />
-                  </Typography>
-                }
-                sx={{
-                  fontSize: "24px",
-                  py: 5,
-                  bgcolor: x[1],
-                  color: x[2],
-                }}
-              />
-              <Typography variant="h3" textAlign="center" sx={{ mt: 2 }}>
-                {teams[places[i]]}
-              </Typography>
-            </Paper>
-          ))}
+        <Stack spacing={2} alignItems="center">
+          <Paper
+            variant="elevation"
+            elevation={6}
+            sx={{ padding: 2 }}
+          >
+            <Chip
+              label={
+                <Typography variant="h2" textAlign="center">
+                  <WorkspacePremiumOutlinedIcon
+                    sx={{ width: 48, height: 48 }}
+                  />{" "}
+                  1st Place{" "}
+                  <WorkspacePremiumOutlinedIcon
+                    sx={{ width: 48, height: 48 }}
+                  />
+                </Typography>
+              }
+              sx={{
+                fontSize: "24px",
+                py: 5,
+                bgcolor: "#fdbd10",
+                color: "#fff",
+              }}
+            />
+            <Typography variant="h3" textAlign="center" sx={{ mt: 2 }}>
+              {places[0] ? teams[places[0][1]] : "TBD"}
+            </Typography>
+          </Paper>
+          <Stack direction="row" spacing={2}>
+            {[
+              ["2nd Place", "#d0d0d0", "#000"],
+              ["3rd Place", "#a77044", "#fff"],
+            ].map((x, i) => (
+              <Paper
+                variant="elevation"
+                elevation={6}
+                sx={{ padding: 2 }}
+                key={`place-${i + 1}`}
+              >
+                <Chip
+                  label={
+                    <Typography variant="h2" textAlign="center">
+                      <WorkspacePremiumOutlinedIcon
+                        sx={{ width: 48, height: 48 }}
+                      />{" "}
+                      {x[0]}{" "}
+                      <WorkspacePremiumOutlinedIcon
+                        sx={{ width: 48, height: 48 }}
+                      />
+                    </Typography>
+                  }
+                  sx={{
+                    fontSize: "24px",
+                    py: 5,
+                    bgcolor: x[1],
+                    color: x[2],
+                  }}
+                />
+                <Typography variant="h3" textAlign="center" sx={{ mt: 2 }}>
+                  {places[i + 1] ? teams[places[i + 1][1]] : "TBD"}
+                </Typography>
+              </Paper>
+            ))}
+          </Stack>
         </Stack>
       </Stack>
       <Tooltip title="Full Leaderboard">
