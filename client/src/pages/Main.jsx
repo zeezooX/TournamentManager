@@ -294,6 +294,17 @@ const Main = () => {
             <Grid item xs={4} textAlign="left">
               <Collapse in={isVisible}>
                 <ButtonGroup variant="outlined" color="orange">
+                <Button
+                    onClick={(e) =>
+                      handleMatchUpdate(e, [
+                        ongoingMatch.score[0] - 5,
+                        ongoingMatch.score[1],
+                      ])
+                    }
+                  >
+                    <RemoveIcon />
+                    5
+                  </Button>
                   <Button
                     onClick={(e) =>
                       handleMatchUpdate(e, [
@@ -313,6 +324,17 @@ const Main = () => {
                     }
                   >
                     <AddIcon />
+                  </Button>
+                  <Button
+                    onClick={(e) =>
+                      handleMatchUpdate(e, [
+                        ongoingMatch.score[0] + 10,
+                        ongoingMatch.score[1],
+                      ])
+                    }
+                  >
+                    <AddIcon />
+                    10
                   </Button>
                 </ButtonGroup>
               </Collapse>
@@ -357,6 +379,17 @@ const Main = () => {
             <Grid item xs={4} textAlign="right">
               <Collapse in={isVisible}>
                 <ButtonGroup variant="outlined" color="orange">
+                <Button
+                    onClick={(e) =>
+                      handleMatchUpdate(e, [
+                        ongoingMatch.score[0],
+                        ongoingMatch.score[1] - 5,
+                      ])
+                    }
+                  >
+                    <RemoveIcon />
+                    5
+                  </Button>
                   <Button
                     onClick={(e) =>
                       handleMatchUpdate(e, [
@@ -376,6 +409,17 @@ const Main = () => {
                     }
                   >
                     <AddIcon />
+                  </Button>
+                  <Button
+                    onClick={(e) =>
+                      handleMatchUpdate(e, [
+                        ongoingMatch.score[0],
+                        ongoingMatch.score[1] + 10,
+                      ])
+                    }
+                  >
+                    <AddIcon />
+                    10
                   </Button>
                 </ButtonGroup>
               </Collapse>
